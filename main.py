@@ -15,8 +15,15 @@ for line in lines:
     sequences.append(map(lambda symbol: symbols.index(symbol), line))
 
 matrixFile = open(matrixFilename, 'r')
-lines = matrixFile.readlines()
+line = matrixFile.readline()
 matrixFile.close()
-for line in lines:
-    matrix.append(map(lambda element: float(element), line.split()))
+index = 0
+tempArray = []
+for element in line.split():
+    if index == 4:
+        index = 0
+        matrix.append(tempArray)
+        tempArray = []
+    tempArray.append(str(element))
+    index = index + 1
 
