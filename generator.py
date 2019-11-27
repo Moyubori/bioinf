@@ -13,11 +13,6 @@ transitionMatrix = [
     [beta, alpha, beta, (1 - 2 * beta - alpha)],  # T
 ]
 
-sequenceLength = int(sys.argv[1])
-evolutionTime = int(sys.argv[2])
-
-initialDNA = []
-
 
 def sequence_to_string(sequence: list):
     return ''.join(map(lambda element: symbols[element], sequence))
@@ -26,6 +21,11 @@ def sequence_to_string(sequence: list):
 def matrix_to_string(matrix: list):
     return ''.join(map(lambda element: str(element) + ' ', sum(matrix, [])))
 
+
+sequenceLength = int(sys.argv[1])
+evolutionTime = int(sys.argv[2])
+
+initialDNA = []
 
 for i in range(0, sequenceLength):
     initialDNA.append(random.randint(0, len(symbols) - 1))
