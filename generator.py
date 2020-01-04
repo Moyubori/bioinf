@@ -3,8 +3,8 @@ import random
 
 symbols = 'A' 'C' 'G' 'T'
 
-alpha = 1 / 4
-beta = 1 / 4
+alpha = 1 / 3
+beta = 1 / 3
 
 transitionMatrix = [
     [(1 - 2 * beta - alpha), beta, alpha, beta],  # A
@@ -37,9 +37,9 @@ secondSequence = initialDNA.copy()
 
 for t in range(0, evolutionTime):
     for sequence in (firstSequence, secondSequence):
-        for index in range(0, len(sequence) - 1):
+        for index in range(0, len(sequence)):
             rand = random.random()
-            for i in range(0, 3):
+            for i in range(0, 4):
                 probability = transitionMatrix[sequence[index]][i]
                 if rand < probability:
                     sequence[index] = i
