@@ -3,8 +3,8 @@ import random
 
 symbols = 'A' 'C' 'G' 'T'
 
-alpha = 1 / 3
-beta = 1 / 3
+alpha = 1 / 4
+beta = 1 / 4
 
 transitionMatrix = [
     [(1 - 2 * beta - alpha), beta, alpha, beta],  # A

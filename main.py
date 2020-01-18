@@ -2,6 +2,8 @@ import sys
 
 symbols = 'A' 'C' 'G' 'T'
 
+cachedResults = dict()
+
 
 def _parse_sequences(unparsed_sequences: list):
     parsed_sequences = []
@@ -46,22 +48,40 @@ def _compute_probability_for_sequence(time_threshold: int, initial_sequence, fin
         if transition in saved_transition_probabilities:
             symbol_probability = saved_transition_probabilities[transition]
         else:
-            symbol_probability = _compute_probability_for_symbol(1, time_threshold, transition, _matrix)
+            symbol_probability = _compute_probability_for_symbol(
+                1,
+                time_threshold,
+                time_threshold,
+                transition,
+                _matrix
+            )
             saved_transition_probabilities[transition] = symbol_probability
         total_probability = total_probability * symbol_probability
     return total_probability
 
 
-def _compute_probability_for_symbol(probability: float, steps_left: int, transition: tuple, _matrix) -> float:
+def _compute_probability_for_symbol(probability: float, steps_left: int, total_time: int, transition: tuple, _matrix) -> float:
+    # transition: (a, b);
+    #   a - symbol początkowy
+    #   b - symbol wynikowy
     if steps_left == 0:
         if transition[0] == transition[1]:
             return probability
         return 0
+    cache_key = (transition, steps_left, total_time)
+    if cache_key in cachedResults:
+        return cachedResults[cache_key]
     total_probability = 0
     for s in symbols:
         symbol_probability = _compute_probability_for_symbol(
-            probability * _get_transition_probability(_matrix, (transition[0], s)), steps_left - 1, (s, transition[1]), _matrix)
+            probability * _get_transition_probability(_matrix, (transition[0], s)),
+            steps_left - 1,
+            total_time,
+            (s, transition[1]),
+            _matrix
+        )
         total_probability = total_probability + symbol_probability
+    cachedResults[cache_key] = total_probability
     return total_probability
 
 
