@@ -1,5 +1,6 @@
 import sys
 import random
+import math
 
 symbols = 'A' 'C' 'G' 'T'
 
@@ -36,11 +37,20 @@ firstSequence = initialDNA.copy()
 secondSequence = initialDNA.copy()
 
 for t in range(0, evolutionTime):
+    st = (1-exp(-4*beta*t))/4
+    ut = (1+exp(-4*beta*t)-2*exp(-2*(alpha+beta)*t))/4
+    rt = 1-2*st-ut;
+    transitionMatrixAfterT = [
+        [rt,st,ut,st],
+        [st,rt,st,ut],
+        [ut,st,rt,st],
+        [st,ut,st,rt]
+    ]
     for sequence in (firstSequence, secondSequence):
         for index in range(0, len(sequence)):
             rand = random.random()
             for i in range(0, 4):
-                probability = transitionMatrix[sequence[index]][i]
+                probability = transitionMatrixAfterT[sequence[index]][i]
                 if rand < probability:
                     sequence[index] = i
                     break
